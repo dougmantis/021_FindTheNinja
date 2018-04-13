@@ -8,6 +8,7 @@ package findninja;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -158,6 +159,9 @@ public class FindNinja extends JFrame {
                 choiceLabel[choice].setBackground(Color.GRAY);
                 counter++;
                 counterLabel.setText("Guesses: " + counter);
+                
+                System.out.println(Arrays.toString(findCoords(choice)));
+                
             }
             if (choice == ninjaLocation) {
                 choiceLabel[choice].setIcon(ninja);
@@ -181,6 +185,26 @@ public class FindNinja extends JFrame {
         
         counterLabel.setText("Guesses: " + counter);
         
+    }
+    
+    private int[] findCoords(int clickedPosition) {
+        int clickedCoords[] = {1, 1}; //top left, going across then down.   x,y
+        
+        while (clickedPosition % l != 0) {
+            clickedCoords[0]++;
+            clickedPosition--;
+        }
+        while (clickedPosition > 1) {
+            clickedCoords[1]++;
+            clickedPosition-=l;
+        }
+        return clickedCoords;
+    }
+    
+    private float findRelativeAngle(int clickedPosition) {
+        int relativeAngle = 0;
+        
+        return relativeAngle;
     }
     
     private void exitForm(WindowEvent evt) {
