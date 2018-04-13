@@ -35,8 +35,11 @@ public class FindNinja extends JFrame {
     //ImageIcon ninja = new ImageIcon("ninja150.png");
     JButton newButton = new JButton("New Game");
     
+    JLabel counterLabel = new JLabel("Guesses: 0");
+    
     Random myRandom = new Random();
     int ninjaLocation = myRandom.nextInt(h * l);
+    int counter = 0;
     
     /**
      * @param args the command line arguments
@@ -108,6 +111,13 @@ public class FindNinja extends JFrame {
         gridConstraints.insets = new Insets(5,5,5,5);
         getContentPane().add(newButton, gridConstraints);
         newButton.setEnabled(false);
+        
+        gridConstraints = new GridBagConstraints();
+        gridConstraints.gridx = ( l / 2 ) + 1;
+        gridConstraints.gridy = h;
+        gridConstraints.insets = new Insets(5,5,5,5);
+        getContentPane().add(counterLabel, gridConstraints);
+        
         /*
         newButton.addActionListener(new ActionListener() { //Why is this broken? Using whack mouseadapter until fixed.
             public void actionPerformed(ActionEvent e) {
@@ -131,17 +141,30 @@ public class FindNinja extends JFrame {
     private void labelMouseClicked(MouseEvent e) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         
-        Component clickedComponent = e.getComponent();
-        int choice;
-        for (choice = 0; choice < (h * l) -1 ; choice++) {
-            if (clickedComponent == choiceLabel[choice]) {
-                break;
+        
+        if (counter >= 0) {
+            Component clickedComponent = e.getComponent();
+            int choice;
+            for (choice = 0; choice < (h * l) -1 ; choice++) {
+                if (clickedComponent == choiceLabel[choice]) {
+
+                    break;
+                }
             }
-        }
-        choiceLabel[choice].setBackground(Color.GRAY);
-        if (choice == ninjaLocation) {
-            choiceLabel[choice].setIcon(ninja);
-            newButton.setEnabled(true);
+
+            if (choiceLabel[choice].getBackground() == (Color.GRAY)) {
+                counterLabel.setText("You guessed that");
+            } else {
+                choiceLabel[choice].setBackground(Color.GRAY);
+                counter++;
+                counterLabel.setText("Guesses: " + counter);
+            }
+            if (choice == ninjaLocation) {
+                choiceLabel[choice].setIcon(ninja);
+                newButton.setEnabled(true);
+                counterLabel.setText("Total Guesses: " + counter);
+                counter = -1;
+            }
         }
     }
 
@@ -154,6 +177,9 @@ public class FindNinja extends JFrame {
         }
         ninjaLocation = myRandom.nextInt(h*l);
         newButton.setEnabled(false);
+        counter = 0;
+        
+        counterLabel.setText("Guesses: " + counter);
         
     }
     
